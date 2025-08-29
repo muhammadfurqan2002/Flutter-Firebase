@@ -17,7 +17,7 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   final auth=FirebaseAuth.instance;
-  final ref=FirebaseDatabase.instance.ref("Post");
+  final ref=FirebaseDatabase.instance.ref("Post"); // it's sequential database
   final searchController=TextEditingController();
   final editController=TextEditingController();
   @override
@@ -65,9 +65,8 @@ class _PostScreenState extends State<PostScreen> {
 
               if(!snapshot.hasData){
                 return CircularProgressIndicator();
-              }else
-
-              return ListView.builder(
+              }else {
+                return ListView.builder(
                   itemCount: snapshot.data!.snapshot.children.length,
                   itemBuilder: (context,index){
                     Map<dynamic,dynamic> map=snapshot.data!.snapshot.value as dynamic;
@@ -89,7 +88,8 @@ class _PostScreenState extends State<PostScreen> {
                                   child: ListTile(
                                 leading: Icon(Icons.edit),
                                 title: Text("Edit"),
-                              )),PopupMenuItem(
+                              )),
+                              PopupMenuItem(
                                   value:2,
                                   child: ListTile(
                                    onTap:(){
@@ -105,6 +105,7 @@ class _PostScreenState extends State<PostScreen> {
                       return SizedBox.shrink(); // don't render if not matching
                     }
               });
+              }
             }, stream: ref.onValue,),
           )
         ],
